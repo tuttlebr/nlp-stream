@@ -1,0 +1,24 @@
+services:
+  serve:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ["python", "/app/src/main/python/app.py"]
+    environment:
+      - CONSUMER_KEY=${CONSUMER_KEY}
+      - CONSUMER_SECRET=${CONSUMER_SECRET}
+      - ACCESS_TOKEN_KEY=${ACCESS_TOKEN_KEY}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - TRACK_TERM=${TRACK_TERM}
+      - TRACK_ENTAILMENTS=${TRACK_ENTAILMENTS}
+    volumes:
+      - type: bind
+        source: logs
+        target: /logs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
