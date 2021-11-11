@@ -1,9 +1,9 @@
 import os
+
 import torch
 
 os.environ["TRANSFORMERS_CACHE"] = "/app/src/main/python/models"
 from transformers import pipeline
-
 
 print("{} Visible CUDA Capable GPUs.".format(torch.cuda.device_count()))
 
@@ -60,10 +60,8 @@ class ZeroComprehensionEngine(object):
         )
         response["input_str"] = zero_classifier_response["premise"]["sequence"]
         response["sentiment_label"] = sentiment_classifier_response[0]["label"]
-        response["sentiment_confidence"] = sentiment_classifier_response[0][
-            "score"
-        ]
-        string_ints = [str(f) for f in zero_classifier_response["premise"]["scores"]] 
+        response["sentiment_confidence"] = sentiment_classifier_response[0]["score"]
+        string_ints = [str(f) for f in zero_classifier_response["premise"]["scores"]]
         return "{},{},{}".format(
             comment_text,
             ",".join(string_ints),

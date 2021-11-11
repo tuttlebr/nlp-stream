@@ -1,14 +1,11 @@
-from searchtweets import (
-    gen_request_parameters,
-    load_credentials,
-    collect_results,
-)
-from os import getenv
-from logging import info, basicConfig
-from datetime import datetime
-from inference_management import *
 import re
+from datetime import datetime
+from logging import basicConfig, info
+from os import getenv
 
+from inference_management import *
+from searchtweets import (collect_results, gen_request_parameters,
+                          load_credentials)
 
 TRACK_TERM = getenv("TRACK_TERM")
 TIMESTAMP = datetime.now()
@@ -37,12 +34,8 @@ search_args = load_credentials(
     env_overwrite=False,
 )
 
-query = gen_request_parameters(
-    TRACK_TERM, results_per_call=100, granularity=None
-)
-tweets = collect_results(
-    query, max_tweets=5000, result_stream_args=search_args
-)
+query = gen_request_parameters(TRACK_TERM, results_per_call=100, granularity=None)
+tweets = collect_results(query, max_tweets=5000, result_stream_args=search_args)
 
 basicConfig(
     filename="/logs/{}.log".format(LOG_ID),
